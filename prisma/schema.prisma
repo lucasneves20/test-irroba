@@ -9,3 +9,21 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model Product {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String @unique @map("product_description")
+  price Int
+  sku   String
+
+  category Category[]
+}
+
+model Category {
+  id            String @id @default(uuid()) @map("_id") @db.ObjectId
+  category_name String
+
+  // relation User Category
+  product        Product @relation(fields: [categoryUserId], references: [id])
+  categoryUserId String  @db.ObjectId
+}
